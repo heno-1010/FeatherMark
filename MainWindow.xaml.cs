@@ -23,6 +23,21 @@ namespace FeatherMark
             InitializeComponent();
         }
 
+        private void Addfolder_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Addfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
     }
 }
