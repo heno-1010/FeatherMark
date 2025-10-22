@@ -10,22 +10,23 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace FeatherMark
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<TreeViewDate> TreeViewDatas { get; } = new ObservableCollection<TreeViewDate>();
+
         public MainWindow()
         {
             InitializeComponent();
+            treeview.ItemsSource = TreeViewDatas;
         }
 
         private void Addfolder_Click(object sender, RoutedEventArgs e)
         {
-
+            TreeView_Add();
         }
 
         private void Addfile_Click(object sender, RoutedEventArgs e)
@@ -39,5 +40,13 @@ namespace FeatherMark
 
         }
 
+        private void TreeView_Add()
+        {
+            TreeViewDate data = new TreeViewDate
+            {
+                Name = "フォルダノード"
+            };
+            TreeViewDatas.Add(data);
+        }
     }
 }

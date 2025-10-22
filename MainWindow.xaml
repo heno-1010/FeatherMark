@@ -25,11 +25,15 @@
         </StackPanel>
 
         <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="0,10,0,0">
-            <TreeView Name="myTreeViewEvent" >
-                <TreeViewItem Header="Employee1" IsSelected="True">
-                    <TreeViewItem Header="Jesper Aaberg"/>
-                </TreeViewItem>
-            </TreeView>
+            <StackPanel>
+                <TreeView Name="treeview">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </StackPanel>
         </ScrollViewer>
         <TextBox Grid.Column="1" Grid.Row="0" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
         <TextBox Grid.Column="1" Grid.Row="1" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
