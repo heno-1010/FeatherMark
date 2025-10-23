@@ -26,21 +26,21 @@ namespace FeatherMark
 
         private void Addfolder_Click(object sender, RoutedEventArgs e)
         {
-            TreeView_Add();
+            TreeView_Addfolder();
         }
 
         private void Addfile_Click(object sender, RoutedEventArgs e)
         {
-
+            TreeView_Addfile();
         }
 
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            TreeView_Delete();
         }
 
-        private void TreeView_Add()
+        private void TreeView_Addfolder()
         {
             TreeViewDate data = new TreeViewDate
             {
@@ -48,5 +48,20 @@ namespace FeatherMark
             };
             TreeViewDatas.Add(data);
         }
-    }
-}
+        private void TreeView_Addfile()
+        {
+            if (treeview.SelectedItem is TreeViewDate selectedNode) //親ノードが選択されているか
+            {
+                    TreeViewDate fileNode = new TreeViewDate
+                    {
+                        Name = "ファイルノード"
+                    };
+                    selectedNode.Children.Add(fileNode);
+             }
+         }
+        private void TreeView_Delete()
+        {
+
+        }
+     }
+ }
