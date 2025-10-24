@@ -61,7 +61,29 @@ namespace FeatherMark
          }
         private void TreeView_Delete()
         {
-
+            if(treeview.SelectedItem is TreeViewDate selectedNode)
+            {
+                TreeViewDate parentNode = FindParentNode(selectedNode);//親ノード取得
+                if(parentNode != null)
+                {
+                    parentNode.Children.Remove(selectedNode);
+                }
+                else
+                {
+                    TreeViewDatas.Remove(selectedNode);
+                }
+                
+            }
+        }
+        private TreeViewDate FindParentNode(TreeViewDate node)
+        {
+            foreach (var parent in TreeViewDatas) {
+                if (parent.Children.Contains(node))
+                {
+                    return parent;
+                }
+            }
+            return null;
         }
      }
  }
