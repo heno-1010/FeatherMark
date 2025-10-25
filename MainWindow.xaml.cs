@@ -52,11 +52,15 @@ namespace FeatherMark
         {
             if (treeview.SelectedItem is TreeViewDate selectedNode) //親ノードが選択されているか
             {
+                TreeViewDate parentNode = FindParentNode(selectedNode);//親ノード取得
+                if (parentNode == null) {
                     TreeViewDate fileNode = new TreeViewDate
                     {
                         Name = "ファイルノード"
                     };
                     selectedNode.Children.Add(fileNode);
+                }
+
              }
          }
         private void TreeView_Delete()
