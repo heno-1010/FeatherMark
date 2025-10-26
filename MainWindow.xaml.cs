@@ -76,7 +76,6 @@ namespace FeatherMark
                 {
                     TreeViewDatas.Remove(selectedNode);
                 }
-                
             }
         }
         private TreeViewDate FindParentNode(TreeViewDate node)
@@ -89,5 +88,23 @@ namespace FeatherMark
             }
             return null;
         }
-     }
+
+        private void Treeview_SelectedItemChanged(object sender, RoutedEventArgs e)
+        {
+            if(treeview.SelectedItem is TreeViewDate selectedNode)
+            {
+                if (!selectedNode.IsFolder)//ノードがファイルなら表示
+                {
+                    Content.Text = selectedNode.Content;
+                }
+            }
+        }
+        private void Content_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (treeview.SelectedItem is TreeViewDate selectedNode && !selectedNode.IsFolder)
+            {
+                selectedNode.Content = Content.Text;
+            }
+        }
+    }
  }

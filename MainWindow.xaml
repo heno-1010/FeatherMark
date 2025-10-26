@@ -26,7 +26,7 @@
 
         <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="0,10,0,0">
             <StackPanel>
-                <TreeView Name="treeview">
+                <TreeView Name="treeview" SelectedItemChanged="Treeview_SelectedItemChanged">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
@@ -35,8 +35,8 @@
                 </TreeView>
             </StackPanel>
         </ScrollViewer>
-        <TextBox Grid.Column="1" Grid.Row="0" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
+        <TextBox x:Name="Tag" Grid.Column="1" Grid.Row="0" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
+        <TextBox x:Name="Content" Grid.Column="1" Grid.Row="1" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True" TextChanged="Content_TextChanged"/>
         <TextBlock Text="150" Grid.Column="1" Grid.Row="2" Margin="5,0,5,5" Foreground="#ffffff" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>
 </Window>

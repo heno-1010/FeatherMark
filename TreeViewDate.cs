@@ -17,5 +17,7 @@ namespace FeatherMark
         public TreeViewDate() { 
             Children = new ObservableCollection<TreeViewDate>();
         }
+        public string Content { get; set; }
+        public bool IsFolder => Children.Count > 0;
     }
 }
