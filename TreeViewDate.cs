@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,15 +10,18 @@ namespace FeatherMark
 {
     class TreeViewDate
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public string Name { get; set; }
-        public ObservableCollection<TreeViewDate> Children { get; set; } = new ObservableCollection<TreeViewDate>();
-        public TreeViewDate Parent { get; set; } // 親ノードを参照
-        public static object Nodes { get; internal set; }
-
-        public TreeViewDate() { 
-            Children = new ObservableCollection<TreeViewDate>();
-        }
         public string Content { get; set; }
-        public bool IsFolder => Children.Count > 0;
+        [Ignore]
+        public ObservableCollection<TreeViewDate> Children { get; set; } = new ObservableCollection<TreeViewDate>();
+        public int? ParentId { get; set; }  // 親ノードのID（親がない場合はnull）
+        public bool IsFolder => Children.Count > 0;  // フォルダかファイルかの判定
+        public bool IsFolderFlag { get; set; } // trueならフォルダ、falseならファイル
+        public TreeViewDate()
+        {
+            Children = new ObservableCollection<TreeViewDate>();  // 初期化
+        }
     }
 }

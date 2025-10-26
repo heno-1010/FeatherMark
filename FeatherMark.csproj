@@ -12,6 +12,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
 		<PackageReference Include="ModernWpfUI" Version="0.9.6" />
+		<PackageReference Include="SQLite-net-pcl" Version="1.9.172" />
 	</ItemGroup>
 	
 </Project>

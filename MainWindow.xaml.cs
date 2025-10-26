@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -11,19 +12,77 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using SQLite;
 
 namespace FeatherMark
 {
     public partial class MainWindow : Window
     {
         private ObservableCollection<TreeViewDate> TreeViewDatas { get; } = new ObservableCollection<TreeViewDate>();
+        private SQLiteConnection db;
 
         public MainWindow()
         {
             InitializeComponent();
+            InitializeDatabase();
+            LoadDate();
             treeview.ItemsSource = TreeViewDatas;
+            this.Closing += Window_Closing;
+        }
+        private void InitializeDatabase()
+        {
+            var dbPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TreeViewData.db");
+            db = new SQLiteConnection(dbPath);
+            db.CreateTable<TreeViewDate>();
+        }
+        private void SaveDate()
+        {
+            foreach(var root in TreeViewDatas)
+            {
+                SaveNode(root);
+            }
+        }
+        private void SaveNode(TreeViewDate node)
+        {
+            node.IsFolderFlag = node.IsFolder;
+
+            if (node.Id == 0) // 新しいノードの場合
+            {
+                db.Insert(node); // 新規
+            }
+            else
+            {
+                db.Update(node); // 更新
+            }
+
+            foreach (var child in node.Children)
+            {
+                child.ParentId = node.Id;
+                SaveNode(child); // 子ノードを保存
+            }
+        }
+        private void LoadDate()
+        {
+            var rootNodes = db.Table<TreeViewDate>().Where(n => n.ParentId == null).ToList();
+            TreeViewDatas.Clear();
+
+            foreach (var root in rootNodes)
+            {
+                LoadNode(root);  // 再帰的に子ノードをロード
+                TreeViewDatas.Add(root); // ルートノードのみ追加
+            }
         }
 
+        private void LoadNode(TreeViewDate node)
+        {
+            node.Children = new ObservableCollection<TreeViewDate>();
+            var childNodes = db.Table<TreeViewDate>().Where(n => n.ParentId == node.Id).ToList();
+            foreach (var child in childNodes)
+            {
+                LoadNode(child); // 子ノードも再帰的にロード
+                node.Children.Add(child); // 親ノードのChildrenにだけ追加
+            }
+        }
         private void Addfolder_Click(object sender, RoutedEventArgs e)
         {
             TreeView_Addfolder();
@@ -68,7 +127,8 @@ namespace FeatherMark
             if(treeview.SelectedItem is TreeViewDate selectedNode)
             {
                 TreeViewDate parentNode = FindParentNode(selectedNode);//親ノード取得
-                if(parentNode != null)
+                DeleteNodeFromDatabase(selectedNode);
+                if (parentNode != null)
                 {
                     parentNode.Children.Remove(selectedNode);
                 }
@@ -77,6 +137,13 @@ namespace FeatherMark
                     TreeViewDatas.Remove(selectedNode);
                 }
             }
+        }
+        private void DeleteNodeFromDatabase(TreeViewDate node)
+        {
+            foreach(var child in node.Children.ToList()){
+                DeleteNodeFromDatabase(child);
+            }
+            db.Delete(node);
         }
         private TreeViewDate FindParentNode(TreeViewDate node)
         {
@@ -105,6 +172,10 @@ namespace FeatherMark
             {
                 selectedNode.Content = Content.Text;
             }
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveDate(); // アプリ終了時にデータを保存
         }
     }
  }
