@@ -26,7 +26,7 @@
 
         <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="0,10,0,0">
             <StackPanel>
-                <TreeView Name="treeview" SelectedItemChanged="Treeview_SelectedItemChanged">
+                <TreeView Name="treeview" SelectedItemChanged="Treeview_SelectedItemChanged" MouseRightButtonUp="Treeview_MouseRightButtonUp">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel>
@@ -35,6 +35,11 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="名前を変更" Click="MenuItem_Click"/>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
                 </TreeView>
             </StackPanel>
         </ScrollViewer>

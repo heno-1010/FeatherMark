@@ -106,6 +106,7 @@ namespace FeatherMark
                 Name = "フォルダノード"
             };
             TreeViewDatas.Add(data);
+            SaveDate();
         }
         private void TreeView_Addfile()
         {
@@ -119,9 +120,9 @@ namespace FeatherMark
                     };
                     selectedNode.Children.Add(fileNode);
                 }
-
              }
-         }
+            SaveDate();
+        }
         private void TreeView_Delete()
         {
             if(treeview.SelectedItem is TreeViewDate selectedNode)
@@ -176,6 +177,30 @@ namespace FeatherMark
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveDate(); // アプリ終了時にデータを保存
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (treeview.SelectedItem is TreeViewDate selectedNode)
+            {
+                string newname = Microsoft.VisualBasic.Interaction.InputBox("新しい名前を入力してください:", "名前を変更", selectedNode.Name);
+                selectedNode.Name = newname;
+                db.Update(selectedNode);
+                LoadDate();
+            }
+        }
+
+        private void Treeview_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var treeViewItem = e.OriginalSource as DependencyObject;
+            while(treeViewItem != null && !(treeViewItem is TreeViewItem))
+            {
+                treeViewItem = VisualTreeHelper.GetParent(treeViewItem);
+            }
+            if (treeViewItem is TreeViewItem item)
+            {
+                item.IsSelected = true;
+            }
         }
     }
  }
