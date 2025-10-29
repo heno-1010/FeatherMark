@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using ModernWpf.Controls.Primitives;
+using SQLite;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,8 +14,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using SQLite;
 
 namespace FeatherMark
 {
@@ -167,13 +168,7 @@ namespace FeatherMark
                 }
             }
         }
-        private void Content_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (treeview.SelectedItem is TreeViewDate selectedNode && !selectedNode.IsFolder)
-            {
-                selectedNode.Content = Content.Text;
-            }
-        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveDate(); // アプリ終了時にデータを保存
@@ -201,6 +196,46 @@ namespace FeatherMark
             {
                 item.IsSelected = true;
             }
+        }
+
+        private void Content_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var textBox = sender as TextBox;
+                if (textBox == null) return;
+
+                // 現在のカーソル位置を取得
+                int caretIndex = textBox.CaretIndex;
+
+                // テキストを行ごとに分割
+                var lines = textBox.Text.Split('\n');
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].StartsWith("## "))
+                    {
+                        // ## を削除してタイトルの書式に変更
+                        lines[i] = "タイトル：" + lines[i].Substring(3);
+                    }
+                }
+
+                // 書式変更後のテキストを再設定
+                textBox.Text = string.Join("\n", lines);
+
+                // 元のカーソル位置を復元
+                textBox.CaretIndex = caretIndex;
+
+                // Enterキーによる改行を無効化
+                e.Handled = true;
+            }
+        }
+        private string ConvertMarkdownToText(string inputText)
+        {
+            if(inputText.StartsWith("## "))
+            {
+                return "タイトル：" + inputText.Substring(3);
+            }
+            return inputText;
         }
     }
  }

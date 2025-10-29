@@ -43,8 +43,7 @@
                 </TreeView>
             </StackPanel>
         </ScrollViewer>
-        <TextBox x:Name="Tag" Grid.Column="1" Grid.Row="0" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True"/>
-        <TextBox x:Name="Content" Grid.Column="1" Grid.Row="1" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" AcceptsReturn="True" TextChanged="Content_TextChanged"/>
+        <TextBox x:Name="Content" Grid.Column="1" Grid.Row="1" Background="#222222" BorderThickness="0" Foreground="#ffffff" FocusVisualStyle="{x:Null}" KeyDown="Content_KeyDown"/>
         <TextBlock Text="150" Grid.Column="1" Grid.Row="2" Margin="5,0,5,5" Foreground="#ffffff" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>
 </Window>
